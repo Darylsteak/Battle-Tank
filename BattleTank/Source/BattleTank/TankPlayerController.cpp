@@ -40,10 +40,16 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
 {
-	//shoot raycast
-		//detect if hit anything
-			//if you hit anything return true and hit location
-			//if else return false
+	//Find the crosshair position
+	int32 ViewportSizeX, ViewportSizeY;
+	GetViewportSize(ViewportSizeX, ViewportSizeY);
+	auto ScreenLocation = FVector2D( ViewportSizeX * CrossHairXLocation , ViewportSizeY * CrossHairYLocation );
+
+	//remov sanic fast
+	UE_LOG(LogTemp, Warning, TEXT("ScreenLocation: %s"), *ScreenLocation.ToString());
+
+	//"De-project" the screen position of the crosshair to a world collision
+	//Line trace along that and see what we hit (up to certain range)
 	OutHitLocation = FVector(1.0);
 	return true;
 }
