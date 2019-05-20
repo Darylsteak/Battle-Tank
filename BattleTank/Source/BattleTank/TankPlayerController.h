@@ -4,6 +4,7 @@
 
 #include "Tank.h"
 #include "CoreMinimal.h"
+#include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
@@ -25,6 +26,9 @@ private:
 	//Start the tank moving the barrel so that a shot would hit where the crosshair intersects the world.
 	void AimTowardsCrosshair();
 	bool GetSightRayHitLocation(FVector & OutHitLocation) const;
+	bool GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection) const;
+
+	bool GetLookVectorHitLocation(FVector& OutHitLocation,FVector LookDirection) const;
 
 	UPROPERTY(EditAnywhere)
 	float CrossHairXLocation = 0.5f;
