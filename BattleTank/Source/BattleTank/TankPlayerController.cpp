@@ -31,8 +31,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation; //OUT Parameter
 	if (GetSightRayHitLocation(HitLocation)) //Will line trace
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString());
-		// TODO control tank to aim at this point
+		GetControlledTank()->AimAt(HitLocation);
 	}
 
 	//Get world location through crosshair thru linetrace, return true if hits landscape	
@@ -43,7 +42,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 	return Cast<ATank>(GetPawn());
 }
 
-bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
+bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 {
 	//Find the crosshair position
 	int32 ViewportSizeX, ViewportSizeY;
@@ -55,10 +54,12 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
 		//Line trace along that and see what we hit (up to certain range)
-		GetLookVectorHitLocation(OutHitLocation, LookDirection);
+		GetLookVectorHitLocation(LookDirection, HitLocation);
+
+		return true;
 	}
 
-	OutHitLocation = FVector(1.0);
+	HitLocation = FVector(1.0);
 	return true;
 }
 
@@ -74,26 +75,24 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 	);
 }
 
-bool ATankPlayerController::GetLookVectorHitLocation(FVector& OutHitLocation,FVector LookDirection) const
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& HitLocation) const
 {
-	int32 LineTraceRange = 1000000;
 	FHitResult HitResult;
-	FVector TraceStart = APlayerCameraManager().GetCameraLocation();
-	FVector TraceEnd = TraceStart + (LookDirection* LineTraceRange);
-
-	if (GetWorld()->LineTraceSingleByChannel
-	(
+	auto StartLocation = PlayerCameraManager->GetCameraLocation();
+	auto EndLocation = StartLocation + (LookDirection * LineTraceRange);
+	if (GetWorld()->LineTraceSingleByChannel(
 		HitResult,
-		TraceStart,
-		TraceEnd,
+		StartLocation,
+		EndLocation,
 		ECollisionChannel::ECC_Visibility
 	))
 	{
-		HitResult.Location;
+		HitLocation = HitResult.Location;
 		return true;
 	}
 
-	return false;
+	HitLocation = FVector(0);
+	return false; // Line trace didn't succeed
 }
 
 
