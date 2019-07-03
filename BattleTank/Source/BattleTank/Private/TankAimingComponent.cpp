@@ -49,11 +49,11 @@ void UTankAimingComponent::AimAtForAimingComponent(FVector HitLocation, float La
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
-		UE_LOG(LogTemp, Warning, TEXT("aiming solution found"));
+		//UE_LOG(LogTemp, Warning, TEXT("aiming solution found"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("No aiming solution found"));
+		//UE_LOG(LogTemp, Warning, TEXT("No aiming solution found"));
 	}
 
 	//if no solution found do nothing
@@ -65,7 +65,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator = AimAsRotator - BarrelRotator;
-	UE_LOG(LogTemp, Warning, TEXT("DeltaRotator: %s"), *DeltaRotator.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("DeltaRotator: %s"), *DeltaRotator.ToString());
 
 	Barrel->Elevate(DeltaRotator.GetNormalized().Pitch);
 	Turret->Rotate(DeltaRotator.GetNormalized().Yaw);
