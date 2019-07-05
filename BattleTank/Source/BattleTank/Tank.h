@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Engine/World.h"
 #include "Components/SceneComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Tank.generated.h"
 
