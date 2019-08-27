@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/StaticMeshComponent.h"
+#include "GameFramework/Actor.h"
+#include "Components/PrimitiveComponent.h"
 #include "TankTrack.generated.h"
 
 /**
@@ -19,5 +21,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Input")
 	void SetThrottle(float Throttle);
 	
-	//TODO clamp actual throttle value to +1 and -1 so player cant over throttle by editing axis inputs
+	//This is max force per track in newtons
+	//Assume 40 ton tank and 1g acceleration (default is 38310)
+	UPROPERTY(EditDefaultsOnly)
+	float TrackMaxDrivingForce = 38310
+		;
 };
