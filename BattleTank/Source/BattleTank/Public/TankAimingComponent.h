@@ -9,6 +9,14 @@
 #include "Kismet/GameplayStatics.h"
 #include "TankAimingComponent.generated.h"
 
+UENUM()
+enum class EFiringStatus : uint8
+{
+	Reloading,
+	Aiming,
+	Locked
+};
+
 //Forward declaration 
 class UTankBarrel; 
 class UTurret;
@@ -31,6 +39,10 @@ public:
 
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 	void SetTurretReference(UTurret* TurretToSet);
+
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+	EFiringStatus FiringStatus = EFiringStatus::Reloading;
 
 private:
 	UTankBarrel* Barrel = nullptr;
