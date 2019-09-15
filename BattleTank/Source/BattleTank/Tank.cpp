@@ -4,7 +4,6 @@
 #include "TankBarrel.h"
 #include "Projectile.h"
 #include "TankAimingComponent.h"
-#include "TankMovementComponent.h"
 
 // Sets default values
 ATank::ATank()
@@ -20,7 +19,9 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay(); //Needed for BP begin play to run
 
-	UE_LOG(LogTemp,Warning,TEXT("C++:C++ Begin play"))
+	UE_LOG(LogTemp, Warning, TEXT("C++:C++ Begin play"))
+
+		TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 	
 }
 
