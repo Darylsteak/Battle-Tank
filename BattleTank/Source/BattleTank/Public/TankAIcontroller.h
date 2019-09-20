@@ -9,8 +9,6 @@
 #include "Engine//World.h"
 #include "TankAIcontroller.generated.h"
 
-class ATank;
-
 /**
  * 
  */

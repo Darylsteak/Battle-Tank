@@ -33,12 +33,11 @@ public:
 
 public:	
 
-	void AimAtForAimingComponent(FVector HitLocation, float LaunchSpeed);
-
-	//TODO set turret ref
-
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UTankBarrel* BarrelToSet, UTurret* TurretToSet);
+
+	void AimAt(FVector Hitlocation);
+
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
@@ -51,4 +50,7 @@ private:
 
 	void MoveBarrelTowards(FVector AimDirection);
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float LaunchSpeed = 100000; //TODO Find sensible default
+
 };

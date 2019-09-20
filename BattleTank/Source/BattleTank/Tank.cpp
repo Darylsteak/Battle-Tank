@@ -3,7 +3,6 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
-#include "TankAimingComponent.h"
 
 // Sets default values
 ATank::ATank()
@@ -18,10 +17,6 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay(); //Needed for BP begin play to run
-
-	UE_LOG(LogTemp, Warning, TEXT("C++:C++ Begin play"))
-
-		TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 	
 }
 
@@ -30,12 +25,6 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-}
-
-void ATank::AimAt(FVector HitLocation)
-{
-	if (!ensure(TankAimingComponent)) { return; }  //Failed
-	TankAimingComponent->AimAtForAimingComponent(HitLocation, LaunchSpeed);
 }
 
 void ATank::Fire()

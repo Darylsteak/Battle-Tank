@@ -11,7 +11,6 @@
 #include "Tank.generated.h"
 
 //Forward declerations
-class UTankAimingComponent;
 class UTankBarrel;
 class UTurret;
 class AProjectile;
@@ -24,8 +23,6 @@ class BATTLETANK_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank();
-	
-	void AimAt(FVector Hitlocation);
 
 	UFUNCTION(BlueprintCallable, Category = Firing)
 	void Fire();
@@ -33,9 +30,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UPROPERTY(BlueprintReadOnly)
-	UTankAimingComponent* TankAimingComponent = nullptr;
 
 public:	
 	// Called to bind functionality to input
