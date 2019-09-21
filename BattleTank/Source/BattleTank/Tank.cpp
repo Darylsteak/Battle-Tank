@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank.h"
-#include "TankBarrel.h"
-#include "Projectile.h"
 
 // Sets default values
 ATank::ATank()
@@ -27,23 +25,3 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ATank::Fire()
-{
-	if (!ensure(Barrel)) { return; }
-
-	bool IsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
-
-	if (IsReloaded)
-	{
-		auto Projectile = GetWorld()->SpawnActor<AProjectile>
-		(
-		ProjectileBlueprint, 
-		Barrel->GetSocketLocation(FName("Shell")),
-		Barrel->GetSocketRotation(FName("Shell"))
-		);
-
-		Projectile->LaunchProjectile(LaunchSpeed);
-
-		LastFireTime = FPlatformTime::Seconds();
-	}
-}

@@ -10,11 +10,6 @@
 #include "Components/StaticMeshComponent.h"
 #include "Tank.generated.h"
 
-//Forward declerations
-class UTankBarrel;
-class UTurret;
-class AProjectile;
-
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -24,9 +19,6 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 
-	UFUNCTION(BlueprintCallable, Category = Firing)
-	void Fire();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -34,20 +26,5 @@ protected:
 public:	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	//TODO remove once firing is moved to aiming component
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float LaunchSpeed = 100000; //TODO Find sensible default
-
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	TSubclassOf<AProjectile> ProjectileBlueprint;
-
-private:
-	UTankBarrel* Barrel = nullptr;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float ReloadTimeInSeconds = 3;
-
-	double LastFireTime = 0;
 	
 };
