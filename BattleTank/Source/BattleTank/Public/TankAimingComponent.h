@@ -58,7 +58,9 @@ private:
 	UTurret* Turret = nullptr;
 
 	void MoveBarrelTowards(FVector AimDirection);
-	
+
+	bool IsBarrelMoving();
+
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 100000; //TODO Find sensible default
 
@@ -75,4 +77,6 @@ private:
 	) override;
 
 	virtual void BeginPlay() override;
+
+	FVector AimDirection;
 };

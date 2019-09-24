@@ -4,6 +4,7 @@
 #include "Turret.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
+#include "Math/Vector.h"
 #include "BattleTank.h"
 
 
@@ -19,6 +20,8 @@ UTankAimingComponent::UTankAimingComponent()
 
 void UTankAimingComponent::BeginPlay()
 {
+	Super::BeginPlay();
+
 	//So that first fire is after initial reload
 	LastFireTime = FPlatformTime::Seconds();
 }
@@ -50,7 +53,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 
 	if (bhaveAimSolution)
 	{
-		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+		AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveBarrelTowards(AimDirection);
 		//UE_LOG(LogTemp, Warning, TEXT("aiming solution found"));
 	}
@@ -76,11 +79,27 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	Turret->Rotate(DeltaRotator.GetNormalized().Yaw);
 }
 
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(Barrel)) { return false; }
+	auto BarrelForward = Barrel->GetForwardVector();
+	return !BarrelForward.Equals(AimDirection, 0.01); 
+}
+
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
-	if ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds)
+
+	if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds)
 	{
 		FiringStatus = EFiringStatus::Reloading;
+	}
+	else if (IsBarrelMoving())
+	{
+		FiringStatus = EFiringStatus::Aiming;
+	}
+	else
+	{
+		FiringStatus = EFiringStatus::Locked;
 	}
 }
 
@@ -88,19 +107,17 @@ void UTankAimingComponent::Fire()
 {
 	if (FiringStatus != EFiringStatus::Reloading)
 	{
+		// Spawn a projectile at the socket location on the barrel
 		if (!ensure(Barrel)) { return; }
 		if (!ensure(ProjectileBlueprint)) { return; }
-		auto Projectile = GetWorld()->SpawnActor<AProjectile>
-			(
-				ProjectileBlueprint,
-				Barrel->GetSocketLocation(FName("Shell")),
-				Barrel->GetSocketRotation(FName("Shell"))
-				);
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Shell")),
+			Barrel->GetSocketRotation(FName("Shell"))
+			);
 
 		Projectile->LaunchProjectile(LaunchSpeed);
-
 		LastFireTime = FPlatformTime::Seconds();
 	}
 }
-
 		
