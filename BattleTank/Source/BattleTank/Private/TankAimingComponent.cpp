@@ -26,6 +26,11 @@ void UTankAimingComponent::BeginPlay()
 	LastFireTime = FPlatformTime::Seconds();
 }
 
+EFiringStatus UTankAimingComponent::GetFiringState() const
+{
+	return FiringStatus;
+}
+
 void UTankAimingComponent::Initialise(UTankBarrel * BarrelToSet, UTurret * TurretToSet)
 {
 	Barrel = BarrelToSet;
@@ -130,4 +135,4 @@ void UTankAimingComponent::Fire()
 		LastFireTime = FPlatformTime::Seconds();
 	}
 }
-		
+
