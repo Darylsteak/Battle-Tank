@@ -14,7 +14,8 @@ enum class EFiringStatus : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	Empty
 };
 
 //Forward declaration 
@@ -44,6 +45,9 @@ public:
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
 	EFiringStatus GetFiringState() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+	int GetAmmoLeft() const;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
@@ -76,4 +80,7 @@ private:
 	virtual void BeginPlay() override;
 
 	FVector AimDirection;
+
+	int Ammo = 3;
 };
+
