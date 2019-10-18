@@ -121,12 +121,10 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	}
 }
 
-
-int UTankAimingComponent::GetAmmoLeft() const
+int32 UTankAimingComponent::GetAmmoLeft() const
 {
 	return Ammo;
 }
-
 
 void UTankAimingComponent::Fire()
 {

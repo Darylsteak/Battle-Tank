@@ -63,12 +63,15 @@ private:
 	bool IsBarrelMoving();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float LaunchSpeed = 100000; //TODO Find sensible default
+	float LaunchSpeed = 8000;
 
 	double LastFireTime = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float ReloadTimeInSeconds = 3;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 Ammo = 3;
 
 	virtual void TickComponent
 	(
@@ -81,6 +84,5 @@ private:
 
 	FVector AimDirection;
 
-	int Ammo = 3;
 };
 
